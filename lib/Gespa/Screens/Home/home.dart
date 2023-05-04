@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gespa_app/Gespa/Screens/Routes/routes.dart';
 import 'package:get/get.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../../../../ui/container_with_corner.dart';
 import '../../../../ui/text_with_tap.dart';
 import '../../../../utils/colors.dart';
@@ -169,6 +170,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+        bottomSheet: SizedBox(
+          width: double.infinity,
+          child: TextButton(
+              onPressed: () async {
+                final user = await ParseUser.currentUser() as ParseUser?;
+                await user?.logout();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.LOGIN, (route) => false);
+              },
+              child: const Text("Terminar Sessão")),
+        ),
       ),
     );
   }
@@ -226,13 +238,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-  }
-
-  void testfirebase() async {
-    /*  await FirebaseFirestore.instance
-        .collection("Teste")
-        .add({"nome": "Abel", "idade": 27}).then((DocumentReference doc) {
-      print("meu id é ${doc.id}");
-    }); */
   }
 }

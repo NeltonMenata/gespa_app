@@ -47,6 +47,7 @@ class _CadastrarTurmaPageState extends State<CadastrarTurmaPage> {
                     hintText: "Escolhe o ano letivo",
                     controller: anoController,
                     getObject: "ano",
+                    action: () {},
                     list: snapshot.data!);
               } else {
                 return const Center(child: CircularProgressIndicator());

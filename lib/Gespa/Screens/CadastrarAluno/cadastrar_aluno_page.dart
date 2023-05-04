@@ -90,6 +90,7 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
                                       hintText: "Escolhe a turma",
                                       controller: turma,
                                       getObject: "turma",
+                                      action: () {},
                                       list: snapshot.data!);
                                 } else {
                                   return const Center(

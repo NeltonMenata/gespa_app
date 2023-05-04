@@ -148,12 +148,14 @@ class TextWithDropParseObject extends StatefulWidget {
       required this.hintText,
       required this.getObject,
       required this.controller,
+      required this.action,
       required this.list})
       : super(key: key);
   final String title;
   final String hintText;
   final TextEditingController controller;
   final List<ParseObject> list;
+  final Function action;
 
   final String getObject;
 
@@ -214,6 +216,7 @@ class _TextWithDropParseObjectState extends State<TextWithDropParseObject> {
                 onChanged: (value) => setState(() {
                       selectedValue = value;
                       widget.controller.text = value!;
+                      widget.action();
                     })),
           ),
         ],
