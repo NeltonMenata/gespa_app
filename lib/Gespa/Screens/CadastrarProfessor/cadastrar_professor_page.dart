@@ -16,6 +16,7 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
   final nome = TextEditingController();
   final disciplina = TextEditingController();
   final turma = TextEditingController();
+  final anoLetivo = TextEditingController();
 
   bool isSaving = false;
   @override
@@ -102,6 +103,23 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
                                 }
                               }),
                             ),
+                            FutureBuilder<List<ParseObject>>(
+                              future: _carregarAnoLetivo(),
+                              builder: ((context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return TextWithDropParseObject(
+                                      title: "Ano Letivo",
+                                      hintText: "Escolhe o ano letivo",
+                                      controller: anoLetivo,
+                                      getObject: "ano",
+                                      action: () {},
+                                      list: snapshot.data!);
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              }),
+                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -126,7 +144,8 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
                                           password.text,
                                           nome.text,
                                           disciplina.text,
-                                          turma.text);
+                                          turma.text,
+                                          anoLetivo.text);
 
                                       setState(() {
                                         isSaving = false;
@@ -162,11 +181,13 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
   }
 
   Future<void> _cadastrarProfessor(String username, String password,
-      String nome, String disciplina, String turma) async {
-    final cadProf = ParseUser(username, password, "$username@gmail.com");
+      String nome, String disciplina, String turma, String anoLetivo) async {
+    final cadProf = ParseUser(
+        username.trim(), password.trim(), "${username.trim()}@gmail.com");
     cadProf.set("name", nome);
     cadProf.set("disciplina", disciplina);
     cadProf.set("turma", ParseObject("Turma")..objectId = turma);
+    cadProf.set("anoLetivo", ParseObject("AnoLetivo")..objectId = anoLetivo);
     cadProf.set("level", 1);
 
     final response = await cadProf.signUp();
@@ -183,5 +204,10 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
     final queryTurma = QueryBuilder(ParseObject("Turma"));
 
     return await queryTurma.find();
+  }
+
+  Future<List<ParseObject>> _carregarAnoLetivo() async {
+    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
+    return await queryAnoLetivo.find();
   }
 }

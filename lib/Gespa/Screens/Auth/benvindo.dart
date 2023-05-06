@@ -1,7 +1,6 @@
 //import 'package:animated_text_kit/animated_text_kit.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 //import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../ui/botton_yeto.dart';
@@ -42,7 +41,7 @@ class BenvindoScreen extends StatelessWidget {
               //height:size.height * 0.9 ,
               marginTop: size.width * 0.3,
               alignment: Alignment.center,
-              child: Container(
+              child: SizedBox(
                 width: size.width * 0.8,
                 child: BottunYeto(
                   onTap: () async {

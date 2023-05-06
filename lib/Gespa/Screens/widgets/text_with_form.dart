@@ -64,17 +64,75 @@ class _TextWithFormState extends State<TextWithForm> {
   }
 }
 
+class TextWithBox extends StatefulWidget {
+  const TextWithBox(
+      {Key? key,
+      required this.title,
+      required this.hintText,
+      this.isPassword,
+      this.keyBoardType,
+      required this.controller})
+      : super(key: key);
+  final String title;
+  final bool? isPassword;
+  final String hintText;
+  final TextInputType? keyBoardType;
+  final TextEditingController controller;
+  @override
+  State<TextWithBox> createState() => _TextWithBoxState();
+}
+
+class _TextWithBoxState extends State<TextWithBox> {
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(15),
+            width: width * .60,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(color: Colors.white)),
+            child: Text(
+              widget.controller.text,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class TextWithDrop extends StatefulWidget {
   TextWithDrop(
       {Key? key,
       required this.title,
       required this.hintText,
       required this.controller,
+      this.action,
       required this.list})
       : super(key: key);
   final String title;
   final String hintText;
   final TextEditingController controller;
+  final Function? action;
   final List<String> list;
 
   @override
@@ -133,6 +191,7 @@ class _TextWithDropState extends State<TextWithDrop> {
                 onChanged: (value) => setState(() {
                       selectedValue = value;
                       widget.controller.text = value!;
+                      widget.action?.call();
                     })),
           ),
         ],

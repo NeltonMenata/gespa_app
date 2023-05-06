@@ -16,7 +16,7 @@ class _AreaAlunoPageState extends State<AreaAlunoPage> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("GESPA"),
+        title: const Text("GESPA"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -35,7 +35,7 @@ class _AreaAlunoPageState extends State<AreaAlunoPage> {
             child: Column(
               children: [
                 const Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     "AREA DO ALUNO",
                     style: TextStyle(color: Colors.white, fontSize: 20),
@@ -55,7 +55,7 @@ class _AreaAlunoPageState extends State<AreaAlunoPage> {
       bottomSheet: SizedBox(
         width: double.infinity,
         child: TextButton(
-          child: Text("Terminar Sessão"),
+          child: const Text("Terminar Sessão"),
           onPressed: () async {
             final current = await ParseUser.currentUser() as ParseUser?;
             await current?.logout();

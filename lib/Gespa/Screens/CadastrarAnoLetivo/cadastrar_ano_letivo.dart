@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gespa_app/utils/message.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -20,26 +19,29 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
       appBar: AppBar(title: Text("Cadastrar Ano Letivo")),
       body: Column(children: [
         Expanded(
-            child: SingleChildScrollView(
-                child: FutureBuilder<List<ParseObject>>(
-          future: _carregarAnoLetivo(),
-          builder: ((context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  ...List.generate(
-                      snapshot.data!.length,
-                      (index) => ListTile(
-                            title: Text(
-                                snapshot.data![index].get("ano").toString()),
-                          ))
-                ],
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          }),
-        ))),
+            child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SingleChildScrollView(
+              child: FutureBuilder<List<ParseObject>>(
+            future: _carregarAnoLetivo(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    ...List.generate(
+                        snapshot.data!.length,
+                        (index) => ListTile(
+                              title: Text(
+                                  snapshot.data![index].get("ano").toString()),
+                            ))
+                  ],
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+          )),
+        )),
         Container(
           height: height * .1,
           width: width,
@@ -62,11 +64,12 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
               IconButton(
                   onPressed: () {
                     setState(() {
-                      if (anoController.text.length > 4) {
-                        showResultCustom(context,
-                            "O Ano Letivo deve ter no minimo quatro caracteres");
+                      if (anoController.text.length != 4) {
+                        showResultCustom(
+                            context, "O Ano Letivo deve ter quatro caracteres");
                         return;
                       }
+
                       _cadastrarAnoLetivo(int.parse(anoController.text));
                     });
                   },
@@ -80,7 +83,6 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
 
   Future<List<ParseObject>> _carregarAnoLetivo() async {
     final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
-
     return await queryAnoLetivo.find();
   }
 
@@ -95,7 +97,8 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
     final parseAno = ParseObject("AnoLetivo");
     parseAno.set("ano", ano);
     await parseAno.save();
-    print(response);
+    // setState(() {
     showResultCustom(context, "Ano Letivo salvo com sucesso!");
+    // });
   }
 }

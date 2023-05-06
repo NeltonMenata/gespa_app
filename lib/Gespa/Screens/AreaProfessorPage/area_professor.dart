@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gespa_app/Gespa/Screens/notas/notas.dart';
 import 'package:gespa_app/Gespa/Screens/Routes/routes.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -17,7 +16,7 @@ class _AreaProfessorPageState extends State<AreaProfessorPage> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("GESPA"),
+        title: const Text("GESPA"),
       ),
       body: Container(
         //padding: const EdgeInsets.all(8),
@@ -115,7 +114,7 @@ class _AreaProfessorPageState extends State<AreaProfessorPage> {
       bottomSheet: SizedBox(
         width: double.infinity,
         child: TextButton(
-          child: Text("Terminar Sessão"),
+          child: const Text("Terminar Sessão"),
           onPressed: () async {
             final current = await ParseUser.currentUser() as ParseUser?;
             await current?.logout();

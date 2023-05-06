@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gespa_app/Gespa/Screens/widgets/text_with_form.dart';
-import 'package:gespa_app/ui/button_rounded.dart';
-import 'package:gespa_app/ui/button_rounded_outline.dart';
-import 'package:gespa_app/ui/text_with_tap.dart';
-import 'package:gespa_app/utils/enums.dart';
 import 'package:gespa_app/utils/message.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -22,6 +18,7 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
   final classeAluno = TextEditingController();
   final turma = TextEditingController();
   final turno = TextEditingController();
+  final anoLetivo = TextEditingController();
   bool isSaving = false;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,7 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("GESPA"),
+        title: const Text("GESPA"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -98,6 +95,23 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
                                 }
                               }),
                             ),
+                            FutureBuilder<List<ParseObject>>(
+                              future: _carregarAnoLetivo(),
+                              builder: ((context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return TextWithDropParseObject(
+                                      title: "Ano Letivo",
+                                      hintText: "Escolhe o ano letivo",
+                                      controller: anoLetivo,
+                                      getObject: "ano",
+                                      action: () {},
+                                      list: snapshot.data!);
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              }),
+                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -125,7 +139,8 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
                                           numeroAluno.text,
                                           turma.text,
                                           turno.text,
-                                          classeAluno.text);
+                                          classeAluno.text,
+                                          anoLetivo.text);
 
                                       setState(() {
                                         isSaving = false;
@@ -162,14 +177,33 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
     );
   }
 
-  Future<void> _cadastrarAluno(String username, String password, String nome,
-      String numero, String turma, String turno, String classe) async {
-    final cadAluno = ParseUser(username, password, "$username@gmail.com");
-    cadAluno.set("name", nome);
-    cadAluno.set("numero", numero);
+  Future<void> _cadastrarAluno(
+      String username,
+      String password,
+      String nome,
+      String numero,
+      String turma,
+      String turno,
+      String classe,
+      String anoLetivo) async {
+    final cadAluno = ParseUser(
+        username.trim(), password.trim(), "${username.trim()}@gmail.com");
+
+    cadAluno.set("name", nome.trim());
+    cadAluno.set("numero", numero.trim());
     cadAluno.set("turma", ParseObject("turma")..objectId = turma);
+    cadAluno.set("anoLetivo", ParseObject("AnoLetivo")..objectId = anoLetivo);
     cadAluno.set("level", 2);
 
+    final queryAluno = QueryBuilder(ParseObject("_User"))
+      ..whereEqualTo("username", "prof");
+    //..whereEqualTo("turma", ParseObject("turma")..objectId = turma);
+    final respQuery = await queryAluno.first();
+    if (respQuery != null) {
+      print("Este usuario já existe");
+      print(respQuery);
+      return;
+    }
     final response = await cadAluno.signUp();
     if (response.success) {
       await showResultCustom(context, "Aluno salvo com sucesso");
@@ -184,5 +218,10 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
     final queryTurma = QueryBuilder(ParseObject("Turma"));
 
     return await queryTurma.find();
+  }
+
+  Future<List<ParseObject>> _carregarAnoLetivo() async {
+    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
+    return await queryAnoLetivo.find();
   }
 }

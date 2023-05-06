@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gespa_app/Gespa/Screens/Auth/auth_ui/login/login_controller.dart';
 import 'package:gespa_app/ui/container_with_corner.dart';
 import 'package:gespa_app/ui/text_field_yetu.dart';
 import 'package:gespa_app/utils/message.dart';
@@ -58,7 +59,7 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_back)),
+                      icon: const Icon(Icons.arrow_back)),
                 ),
                 TextWithTap(
                   "Desfruta do melhor sistema de Gestão de Pautas para Escolas do Ensino Geral de Angola.",
@@ -92,8 +93,8 @@ class _LoginState extends State<Login> {
                     isPassword: false,
                     iscontact: false,
                     icon: IconButton(
-                        icon: Icon(
-                          Icons.email,
+                        icon: const Icon(
+                          Icons.person,
                           color: primaryColorsG,
                         ),
                         onPressed: () {}),
@@ -180,6 +181,7 @@ class _LoginState extends State<Login> {
                           final login = await parseLogin.login();
                           if (login.success) {
                             if (login.result.get("level") == 0) {
+                              LoginController.userLogado = login.result;
                               Get.offAll(
                                 const HomeScreen(),
                                 transition: Transition.circularReveal,
@@ -190,6 +192,7 @@ class _LoginState extends State<Login> {
                               });
                               return;
                             } else if (login.result.get("level") == 1) {
+                              LoginController.userLogado = login.result;
                               Navigator.pushNamedAndRemoveUntil(context,
                                   Routes.AREA_PROFESSOR, (route) => false);
                               setState(() {
@@ -197,6 +200,7 @@ class _LoginState extends State<Login> {
                               });
                               return;
                             } else {
+                              LoginController.userLogado = login.result;
                               Navigator.pushNamedAndRemoveUntil(
                                   context, Routes.AREA_ALUNO, (route) => false);
                               setState(() {
@@ -227,7 +231,7 @@ class _LoginState extends State<Login> {
                   child: CupertinoButton(
                     onPressed: () {},
                     child: Text(
-                      "Crie a sua conta aqui",
+                      "Gerencie pautas escolares com facilidade!",
                       style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
                   ),
