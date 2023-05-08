@@ -745,11 +745,12 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                 ? const CircularProgressIndicator()
                                 : GestureDetector(
                                     onTap: () async {
-                                      if (mes.text.isEmpty ||
-                                          semana.text.isEmpty ||
-                                          nota.text.isEmpty ||
-                                          double.parse(nota.text) > 20 ||
-                                          double.parse(nota.text) < 0 ||
+                                      if (nppNota.text.isEmpty ||
+                                          nptNota.text.isEmpty ||
+                                          double.parse(nppNota.text) > 20 ||
+                                          double.parse(nppNota.text) < 0 ||
+                                          double.parse(nptNota.text) > 20 ||
+                                          double.parse(nptNota.text) < 0 ||
                                           turma.text.isEmpty) {
                                         showResultCustom(context,
                                             "Preencha todos os campos corretamente!");
@@ -1002,6 +1003,58 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         ),
                                       ],
                                     ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Trimestre",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(
+                                              _selectThree == 0
+                                                  ? "1º"
+                                                  : _selectThree == 1
+                                                      ? "2º"
+                                                      : "3º",
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Trimestre",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(
+                                              disciplina.text,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1126,20 +1179,32 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
       required String anoLetivoObjectId}) async {
     // CONSULTAR SE EXISTE NOTA ANTES DE SALVAR
 
-    final queryMac = QueryBuilder(ParseObject("Provas"))
+    // print(alunoObjectId +
+    //     " #### " +
+    //     npp.toString() +
+    //     " #### " +
+    //     npt.toString() +
+    //     " #### " +
+    //     disciplina +
+    //     " #### " +
+    //     professorObjectId +
+    //     " #### " +
+    //     trimestre +
+    //     " #### " +
+    //     anoLetivoObjectId);
+
+    final queryProva = QueryBuilder(ParseObject("Provas"))
       ..whereEqualTo("professor",
           (ParseObject("_User")..objectId = professorObjectId).toPointer())
       ..whereEqualTo(
           "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
       ..whereEqualTo("disciplina", disciplina)
-      ..whereEqualTo("mes", mes)
-      ..whereEqualTo("semana", semana)
       ..whereEqualTo("trimestre", trimestre)
       ..whereEqualTo("anoLetivo",
           (ParseObject("AnoLetivo")..objectId = anoLetivoObjectId).toPointer());
-    final macExistente = await queryMac.first();
+    final provaExistente = await queryProva.first();
 
-    if (macExistente != null) {
+    if (provaExistente != null) {
       Get.defaultDialog(
           content: const Text(
               "Este aluno já tem uma nota atribuida. Deseja subscrever?"),
@@ -1149,8 +1214,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                   Get.back();
 
                   try {
-                    macExistente.set("nota", nota);
-                    final response = await macExistente.save();
+                    provaExistente.set("nota", nota);
+                    final response = await provaExistente.save();
 
                     if (response.success) {
                       setState(() {
@@ -1173,7 +1238,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
           ]);
     } else {
       try {
-        final mac = ParseObject("MAC")
+        final prova = ParseObject("MAC")
           ..set("professor",
               (ParseObject("_User")..objectId = professorObjectId).toPointer())
           ..set("aluno",
@@ -1188,7 +1253,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
               (ParseObject("AnoLetivo")..objectId = anoLetivoObjectId)
                   .toPointer());
 
-        final response = await mac.save();
+        final response = await prova.save();
 
         if (response.success) {
           showResultCustom(context, "Nota lançada com sucesso");
