@@ -121,7 +121,7 @@ class _TextWithBoxState extends State<TextWithBox> {
 }
 
 class TextWithDrop extends StatefulWidget {
-  TextWithDrop(
+  const TextWithDrop(
       {Key? key,
       required this.title,
       required this.hintText,
@@ -174,14 +174,14 @@ class _TextWithDropState extends State<TextWithDrop> {
                 value: selectedValue,
                 hint: Text(
                   widget.hintText,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 items: widget.list
                     .map((e) => DropdownMenuItem<String>(
                           value: e,
                           child: Text(
                             e,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           onTap: () {
                             setState(() {});
@@ -201,7 +201,7 @@ class _TextWithDropState extends State<TextWithDrop> {
 }
 
 class TextWithDropParseObject extends StatefulWidget {
-  TextWithDropParseObject(
+  const TextWithDropParseObject(
       {Key? key,
       required this.title,
       required this.hintText,
@@ -258,14 +258,14 @@ class _TextWithDropParseObjectState extends State<TextWithDropParseObject> {
                 value: selectedValue,
                 hint: Text(
                   widget.hintText,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 items: widget.list
                     .map((e) => DropdownMenuItem<String>(
                           value: e.objectId,
                           child: Text(
                             e.get(widget.getObject).toString(),
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           onTap: () {
                             setState(() {});

@@ -29,19 +29,19 @@ class TextFieldYetu extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final inputBorder = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14.0),
-        
-         borderSide:  BorderSide.none,
-      
-        //borderSide: BorderSide.
-        //borderSide: Divider.createBorderSide(context),
-        );
+      borderRadius: BorderRadius.circular(14.0),
+
+      borderSide: BorderSide.none,
+
+      //borderSide: BorderSide.
+      //borderSide: Divider.createBorderSide(context),
+    );
     return ContainerCorner(
       borderRadius: 20.0,
       height: size.height * 0.07,
       width: size.width / 1.09,
       //width: size.width / 1.09,
-       borderColor: primaryColorsG,
+      borderColor: primaryColorsG,
       alignment: Alignment.center,
       /*   padding: EdgeInsets.only(
         right: size.width / 30,
@@ -59,11 +59,11 @@ class TextFieldYetu extends StatelessWidget {
                 ? TextInputType.phone
                 : TextInputType.text,
         decoration: InputDecoration(
-          suffixIcon:icon ,
-          border:   OutlineInputBorder(
-          //borderRadius: BorderRadius.circular(14.0),
-          borderSide:  BorderSide.none,
-        ),
+          suffixIcon: icon,
+          border: const OutlineInputBorder(
+            //borderRadius: BorderRadius.circular(14.0),
+            borderSide: BorderSide.none,
+          ),
           disabledBorder: InputBorder.none,
           //border: inputBorder,
           focusedBorder: inputBorder,
@@ -71,9 +71,9 @@ class TextFieldYetu extends StatelessWidget {
           //          Color? fillColor,
           // Color? focusColor,
           // Color? hoverColor,
-         // fillColor: primaryColorsG,
+          // fillColor: primaryColorsG,
           focusColor: Colors.black,
-        //  filled: true,
+          //  filled: true,
           contentPadding: const EdgeInsets.all(8),
           hintMaxLines: 1,
           hintText: hintText,

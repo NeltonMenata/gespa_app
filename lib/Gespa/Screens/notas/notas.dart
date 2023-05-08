@@ -7,6 +7,8 @@ import '../../../../ui/text_with_tap.dart';
 import '../../../../utils/colors.dart';
 
 class Notas extends StatefulWidget {
+  const Notas({Key? key}) : super(key: key);
+
   @override
   State<Notas> createState() => _NotasState();
 }
@@ -15,7 +17,7 @@ class _NotasState extends State<Notas> {
   // int? _group = 0;
   int value = 0;
   int? group = 0;
-  Color? _bgColor = Colors.white;
+  final Color _bgColor = Colors.white;
 
   trimestre1({
     required String text,
@@ -58,12 +60,12 @@ class _NotasState extends State<Notas> {
         foregroundColor: primaryColorsG,
         elevation: .0,
         centerTitle: true,
-        title: TextWithTap(
+        title: const TextWithTap(
           "GESPA",
           color: Colors.black,
         ),
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -84,7 +86,7 @@ class _NotasState extends State<Notas> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 marginTop: size.width * 0.1,
-              ),//.animate().fade(duration: 500.ms).scale(delay: 500.ms),
+              ), //.animate().fade(duration: 500.ms).scale(delay: 500.ms),
 
               ContainerCorner(
                 color: Colors.deepOrangeAccent.withOpacity(.7),
@@ -177,11 +179,11 @@ class _NotasState extends State<Notas> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         color: Colors.white,
                         thickness: 4.4,
                       ),
-                      TextWithTap(
+                      const TextWithTap(
                         "APTO",
                         color: Colors.white,
                         fontSize: 24,

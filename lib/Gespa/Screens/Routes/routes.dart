@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:gespa_app/Gespa/Screens/AreaAlunoPage/area_aluno.dart';
 import 'package:gespa_app/Gespa/Screens/AreaProfessorPage/area_professor.dart';
@@ -25,15 +27,15 @@ class Routes {
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
     return {
-      SIGNUP: (context) => SignUp(),
-      LOGIN: (context) => Login(),
-      HOME: (context) => HomeScreen(),
-      CADASTRAR_ALUNO: (context) => CadastrarAlunoPage(),
-      CADASTRAR_PROFESSOR: (context) => CadastrarProfessorPage(),
-      AREA_ALUNO: (context) => AreaAlunoPage(),
-      AREA_PROFESSOR: (context) => AreaProfessorPage(),
-      LANCAR_NOTAS: (context) => LancarNotasPage(),
-      CADASTRAR_ANO_LETIVO: (context) => CadastrarAnoLetivoPage(),
+      SIGNUP: (context) => const SignUp(),
+      LOGIN: (context) => const Login(),
+      HOME: (context) => const HomeScreen(),
+      CADASTRAR_ALUNO: (context) => const CadastrarAlunoPage(),
+      CADASTRAR_PROFESSOR: (context) => const CadastrarProfessorPage(),
+      AREA_ALUNO: (context) => const AreaAlunoPage(),
+      AREA_PROFESSOR: (context) => const AreaProfessorPage(),
+      LANCAR_NOTAS: (context) => const LancarNotasPage(),
+      CADASTRAR_ANO_LETIVO: (context) => const CadastrarAnoLetivoPage(),
       CADASTRAR_TURMA: (context) => CadastrarTurmaPage()
     };
   }

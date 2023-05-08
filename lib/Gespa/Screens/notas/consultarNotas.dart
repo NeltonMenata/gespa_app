@@ -1,4 +1,4 @@
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +8,8 @@ import '../../../../utils/colors.dart';
 import 'notas.dart';
 
 class ConsultarNotas extends StatefulWidget {
+  const ConsultarNotas({Key? key}) : super(key: key);
+
   @override
   _ConsultarNotasState createState() => _ConsultarNotasState();
 }
@@ -22,12 +24,12 @@ class _ConsultarNotasState extends State<ConsultarNotas> {
         foregroundColor: primaryColorsG,
         elevation: .0,
         centerTitle: true,
-        title: TextWithTap(
+        title: const TextWithTap(
           "GESPA",
           color: Colors.black,
         ),
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -57,11 +59,9 @@ class _ConsultarNotasState extends State<ConsultarNotas> {
                     ContainerCorner(
                       onTap: () {
                         Get.to(
-                          Notas(),
+                          const Notas(),
                           transition: Transition.circularReveal,
-                          duration: Duration(seconds: 4),
-                          
-
+                          duration: const Duration(seconds: 4),
                         );
                       },
                       marginTop: 14,

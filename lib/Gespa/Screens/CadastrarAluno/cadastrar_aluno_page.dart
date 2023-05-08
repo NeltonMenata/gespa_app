@@ -191,25 +191,29 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
 
     cadAluno.set("name", nome.trim());
     cadAluno.set("numero", numero.trim());
-    cadAluno.set("turma", ParseObject("turma")..objectId = turma);
+    cadAluno.set("turma", ParseObject("Turma")..objectId = turma);
     cadAluno.set("anoLetivo", ParseObject("AnoLetivo")..objectId = anoLetivo);
     cadAluno.set("level", 2);
 
     final queryAluno = QueryBuilder(ParseObject("_User"))
-      ..whereEqualTo("username", "prof");
+      ..whereEqualTo("numero", numero.trim())
+      ..whereEqualTo(
+          "anoLetivo", ParseObject("AnoLetivo")..objectId = anoLetivo)
+      ..whereEqualTo("turma", ParseObject("Turma")..objectId = turma);
     //..whereEqualTo("turma", ParseObject("turma")..objectId = turma);
     final respQuery = await queryAluno.first();
     if (respQuery != null) {
-      print("Este usuario já existe");
-      print(respQuery);
+      showResultCustom(context,
+          "Erro ao salvar Aluno. Já existe um aluno com este número nessa turma.",
+          isError: true);
       return;
     }
     final response = await cadAluno.signUp();
     if (response.success) {
-      await showResultCustom(context, "Aluno salvo com sucesso");
+      showResultCustom(context, "Aluno salvo com sucesso");
     } else {
-      await showResultCustom(context,
-          "Erro ao salvar Aluno, verifique a internet ou troque o username.",
+      showResultCustom(context,
+          "Erro ao salvar Aluno, verifique a internet ou troque o username. ${response.error}",
           isError: true);
     }
   }

@@ -23,6 +23,7 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("GESPA"),
@@ -192,9 +193,9 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
 
     final response = await cadProf.signUp();
     if (response.success) {
-      await showResultCustom(context, "Professor salvo com sucesso");
+      showResultCustom(context, "Professor salvo com sucesso");
     } else {
-      await showResultCustom(context,
+      showResultCustom(context,
           "Erro ao salvar o Professor, verifique a internet ou troque o username.",
           isError: true);
     }

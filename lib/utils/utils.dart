@@ -14,7 +14,7 @@ pickImage(ImageSource source) async {
 
 showSnackBar(BuildContext context, String text) {
   Fluttertoast.showToast(
-    backgroundColor: Color.fromARGB(113, 30, 136, 229),
+    backgroundColor: const Color.fromARGB(113, 30, 136, 229),
     msg: text,
   );
   /* ScaffoldMessenger.of(context).showSnackBar(

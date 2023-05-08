@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gespa_app/utils/colors.dart';
-
 import 'container_with_corner.dart';
 
 class BottunYeto extends StatelessWidget {

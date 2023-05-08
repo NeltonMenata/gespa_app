@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gespa_app/ui/container_with_corner.dart';
@@ -43,13 +42,12 @@ Widget myTextField(
     bool,
     TextEditingController? controller,
     Function? validator}) {
-    
   return ContainerCorner(
     borderRadius: 20.0,
-      height: Get.height * 0.07,
-      width: Get.width / 1.09,
-      //width: size.width / 1.09,
-       borderColor: primaryColorsG,
+    height: Get.height * 0.07,
+    width: Get.width / 1.09,
+    //width: size.width / 1.09,
+    borderColor: primaryColorsG,
     child: TextFormField(
       validator: (input) => validator!(input),
       obscureText: bool,
@@ -60,7 +58,6 @@ Widget myTextField(
         hintStyle: TextStyle(
           color: AppColors.genderTextColor,
         ),
-        
         hintText: text,
         prefixIcon: Image.asset(
           icon!,
@@ -68,7 +65,7 @@ Widget myTextField(
         ),
         border: OutlineInputBorder(
           //borderRadius: BorderRadius.circular(14.0),
-          borderSide:  BorderSide.none,
+          borderSide: BorderSide.none,
         ),
       ),
     ),
@@ -96,22 +93,19 @@ Widget settingIconAndText(
   text,
   image,
 }) {
-  return Container(
-    // margin: EdgeInsets.only(top: Get.height * 0.03),
-    child: ListTile(
-      onTap: () => onPressed(),
-      leading: SvgPicture.asset(
-        image,
-        height: 20,
-      ),
-      title: Transform.translate(
-        offset: const Offset(-16, 0),
-        child: Text(text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            )),
-      ),
+  return ListTile(
+    onTap: () => onPressed(),
+    leading: SvgPicture.asset(
+      image,
+      height: 20,
+    ),
+    title: Transform.translate(
+      offset: const Offset(-16, 0),
+      child: Text(text,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          )),
     ),
   );
 }
@@ -265,11 +259,9 @@ Widget iconTitleContainer(
       decoration: InputDecoration(
         errorStyle: const TextStyle(fontSize: 0),
         contentPadding: const EdgeInsets.only(top: 3),
-        prefixIcon: Container(
-          child: Image.asset(
-            path,
-            cacheHeight: 18,
-          ),
+        prefixIcon: Image.asset(
+          path,
+          cacheHeight: 18,
         ),
         hintText: text,
         hintStyle: TextStyle(

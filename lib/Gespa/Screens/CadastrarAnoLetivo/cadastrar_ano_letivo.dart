@@ -16,7 +16,7 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastrar Ano Letivo")),
+      appBar: AppBar(title: const Text("Cadastrar Ano Letivo")),
       body: Column(children: [
         Expanded(
             child: Padding(
@@ -73,7 +73,7 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
                       _cadastrarAnoLetivo(int.parse(anoController.text));
                     });
                   },
-                  icon: Icon(Icons.save))
+                  icon: const Icon(Icons.save))
             ],
           ),
         )
