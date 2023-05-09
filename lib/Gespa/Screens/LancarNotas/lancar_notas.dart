@@ -39,7 +39,13 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("GESPA"),
+        title: GestureDetector(
+            onTap: () async {
+              //  await qualquer();
+              print(turma.text);
+              print("Finished");
+            },
+            child: const Text("GESPA")),
       ),
       body: Column(
         children: [
@@ -119,7 +125,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                       Get.snackbar("Carregando",
                                           "Aguarde o carregamento dos alunos da turma selecionada!");
                                       listAluno.clear();
-                                      listAluno.addAll(await _carregarAluno());
+                                      listAluno.addAll(
+                                          await _carregarAluno(turma.text));
                                       setState(() {});
                                       Get.snackbar("Concluido",
                                           "Carregamento de lista de alunos concluido!",
@@ -616,8 +623,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         Get.snackbar("Carregando",
                                             "Aguarde o carregamento dos alunos da turma selecionada!");
                                         listAluno.clear();
-                                        listAluno
-                                            .addAll(await _carregarAluno());
+                                        listAluno.addAll(
+                                            await _carregarAluno(turma.text));
                                         setState(() {});
                                         Get.snackbar("Concluido",
                                             "Carregamento de lista de alunos concluido!",
@@ -783,7 +790,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                       } finally {
                                         setState(() {
                                           isSavingProva = false;
-                                          nota.text = "";
+                                          nptNota.text = "";
+                                          nppNota.text = "";
                                         });
                                       }
                                     },
@@ -845,7 +853,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         const Padding(
-                                          padding: EdgeInsets.all(8),
+                                          padding: EdgeInsets.all(8.0),
                                           child: Text(
                                             "MAC",
                                             style: TextStyle(
@@ -855,13 +863,32 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            mesSelecionado,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
+                                          child: FutureBuilder<double>(
+                                              future: _consultarMacTrimestre(
+                                                  alunoObjectId:
+                                                      identificadorAluno.text,
+                                                  disciplina: disciplina.text,
+                                                  professorObjectId:
+                                                      userLogado.objectId!,
+                                                  anoLetivoObjectId: userLogado
+                                                      .get("anoLetivo")
+                                                      .get("objectId"),
+                                                  trimestre: _selectThree == 0
+                                                      ? "1º"
+                                                      : _selectThree == 1
+                                                          ? "2º"
+                                                          : "3º"),
+                                              initialData: 0,
+                                              builder: (context, snapshot) {
+                                                return Text(
+                                                  snapshot.data!.toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                );
+                                              }),
                                         ),
                                       ],
                                     ),
@@ -881,17 +908,16 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: FutureBuilder<double>(
-                                              future: _consultarNotas(
+                                              future: _consultarNotasProvas(
                                                   alunoObjectId:
                                                       identificadorAluno.text,
+                                                  nppOrNpt: "npp",
                                                   disciplina: disciplina.text,
                                                   professorObjectId:
                                                       userLogado.objectId!,
                                                   anoLetivoObjectId: userLogado
                                                       .get("anoLetivo")
                                                       .get("objectId"),
-                                                  semana: "1ª",
-                                                  mes: mes.text,
                                                   trimestre: _selectThree == 0
                                                       ? "1º"
                                                       : _selectThree == 1
@@ -927,17 +953,16 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: FutureBuilder<double>(
-                                              future: _consultarNotas(
+                                              future: _consultarNotasProvas(
                                                   alunoObjectId:
                                                       identificadorAluno.text,
+                                                  nppOrNpt: "npt",
                                                   disciplina: disciplina.text,
                                                   professorObjectId:
                                                       userLogado.objectId!,
                                                   anoLetivoObjectId: userLogado
                                                       .get("anoLetivo")
                                                       .get("objectId"),
-                                                  semana: "2ª",
-                                                  mes: mes.text,
                                                   trimestre: _selectThree == 0
                                                       ? "1º"
                                                       : _selectThree == 1
@@ -973,7 +998,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: FutureBuilder<double>(
-                                              future: _consultarNotas(
+                                              future: _calcularMD(
                                                   alunoObjectId:
                                                       identificadorAluno.text,
                                                   disciplina: disciplina.text,
@@ -1075,9 +1100,11 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     return await queryTurma.find();
   }
 
-  Future<List<ParseObject>> _carregarAluno() async {
-    final queryAluno = QueryBuilder(ParseObject("_User"));
-    queryAluno.whereEqualTo("level", 2);
+  Future<List<ParseObject>> _carregarAluno(String turmaObjectId) async {
+    final queryAluno = QueryBuilder(ParseObject("_User"))
+      ..whereEqualTo(
+          "turma", (ParseObject("Turma")..objectId = turmaObjectId).toPointer())
+      ..whereEqualTo("level", 2);
     return await queryAluno.find();
   }
 
@@ -1179,20 +1206,6 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
       required String anoLetivoObjectId}) async {
     // CONSULTAR SE EXISTE NOTA ANTES DE SALVAR
 
-    // print(alunoObjectId +
-    //     " #### " +
-    //     npp.toString() +
-    //     " #### " +
-    //     npt.toString() +
-    //     " #### " +
-    //     disciplina +
-    //     " #### " +
-    //     professorObjectId +
-    //     " #### " +
-    //     trimestre +
-    //     " #### " +
-    //     anoLetivoObjectId);
-
     final queryProva = QueryBuilder(ParseObject("Provas"))
       ..whereEqualTo("professor",
           (ParseObject("_User")..objectId = professorObjectId).toPointer())
@@ -1214,7 +1227,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                   Get.back();
 
                   try {
-                    provaExistente.set("nota", nota);
+                    provaExistente.set("npp", npp);
+                    provaExistente.set("npt", npt);
                     final response = await provaExistente.save();
 
                     if (response.success) {
@@ -1238,7 +1252,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
           ]);
     } else {
       try {
-        final prova = ParseObject("MAC")
+        final prova = ParseObject("Provas")
           ..set("professor",
               (ParseObject("_User")..objectId = professorObjectId).toPointer())
           ..set("aluno",
@@ -1268,6 +1282,70 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     //
   }
 
+  Future<double> _calcularMD(
+      {required String alunoObjectId,
+      required String disciplina,
+      required String professorObjectId,
+      required String trimestre,
+      required String mes,
+      required String semana,
+      required String anoLetivoObjectId}) async {
+    final mac = await _consultarMacTrimestre(
+        alunoObjectId: alunoObjectId,
+        disciplina: disciplina,
+        professorObjectId: professorObjectId,
+        trimestre: trimestre,
+        anoLetivoObjectId: anoLetivoObjectId);
+    final npp = await _consultarNotasProvas(
+        alunoObjectId: alunoObjectId,
+        nppOrNpt: "npp",
+        disciplina: disciplina,
+        professorObjectId: professorObjectId,
+        trimestre: trimestre,
+        anoLetivoObjectId: anoLetivoObjectId);
+
+    final npt = await _consultarNotasProvas(
+        alunoObjectId: alunoObjectId,
+        nppOrNpt: "npt",
+        disciplina: disciplina,
+        professorObjectId: professorObjectId,
+        trimestre: trimestre,
+        anoLetivoObjectId: anoLetivoObjectId);
+    return double.parse(((mac + npp + npt) / 3).toStringAsFixed(2));
+  }
+
+  Future<double> _consultarMacTrimestre(
+      {required String alunoObjectId,
+      required String disciplina,
+      required String professorObjectId,
+      required String trimestre,
+      required String anoLetivoObjectId}) async {
+    final queryMac = QueryBuilder(ParseObject("MAC"))
+      ..whereEqualTo("professor",
+          (ParseObject("_User")..objectId = professorObjectId).toPointer())
+      ..whereEqualTo(
+          "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
+      ..whereEqualTo("disciplina", disciplina)
+      ..whereEqualTo("trimestre", trimestre)
+      ..whereEqualTo("anoLetivo",
+          (ParseObject("AnoLetivo")..objectId = anoLetivoObjectId).toPointer());
+    final queryNota = await queryMac.find();
+    int divisor = queryNota.length;
+    double soma = 0;
+    for (var element in queryNota) {
+      double valorAtual =
+          double.tryParse(element.get("nota").toString()) ?? 0.0;
+      if (valorAtual < 1) {
+        divisor--;
+      }
+      soma += valorAtual;
+    }
+    if (divisor < 1) {
+      divisor = 1;
+    }
+    return double.parse((soma / divisor).toStringAsFixed(2));
+  }
+
   Future<double> _consultarNotas(
       {required String alunoObjectId,
       required String disciplina,
@@ -1282,6 +1360,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
       ..whereEqualTo(
           "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
       ..whereEqualTo("disciplina", disciplina)
+      ..whereEqualTo("mes", mes)
+      ..whereEqualTo("semana", semana)
       ..whereEqualTo("trimestre", trimestre)
       ..whereEqualTo("anoLetivo",
           (ParseObject("AnoLetivo")..objectId = anoLetivoObjectId).toPointer());
@@ -1289,4 +1369,37 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
 
     return double.tryParse(queryNota?.get("nota").toString() ?? "0.0") ?? 0.0;
   }
+
+  Future<double> _consultarNotasProvas(
+      {required String alunoObjectId,
+      required String nppOrNpt,
+      required String disciplina,
+      required String professorObjectId,
+      required String trimestre,
+      required String anoLetivoObjectId}) async {
+    final queryNppNpt = QueryBuilder(ParseObject("Provas"))
+      ..whereEqualTo("professor",
+          (ParseObject("_User")..objectId = professorObjectId).toPointer())
+      ..whereEqualTo(
+          "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
+      ..whereEqualTo("disciplina", disciplina)
+      ..whereEqualTo("trimestre", trimestre)
+      ..whereEqualTo("anoLetivo",
+          (ParseObject("AnoLetivo")..objectId = anoLetivoObjectId).toPointer());
+    final resultProvas = await queryNppNpt.first();
+
+    return double.tryParse(resultProvas?.get(nppOrNpt).toString() ?? "0.0") ??
+        0.0;
+  }
+}
+
+Future<void> qualquer() async {
+  final List<ParseObject> listParses = [];
+  for (var c = 0; c < 10; c++) {
+    print(c);
+    listParses.add(ParseObject("OlaMundo")..set("hello", "Hello World"));
+  }
+  final result = await Future.wait(listParses.map((e) => e.save()).toList());
+  result.forEach((e) => print(e.result.get("objectId")));
+  print("Funçao de Concorrência de Chamadas Assincronas!");
 }
