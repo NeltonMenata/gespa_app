@@ -9,6 +9,7 @@ import 'package:gespa_app/Gespa/Screens/CadastrarAluno/cadastrar_aluno_page.dart
 import 'package:gespa_app/Gespa/Screens/CadastrarAnoLetivo/cadastrar_ano_letivo.dart';
 import 'package:gespa_app/Gespa/Screens/CadastrarProfessor/cadastrar_professor_page.dart';
 import 'package:gespa_app/Gespa/Screens/CadastrarTurma/cadastrar_turma_page.dart';
+import 'package:gespa_app/Gespa/Screens/ConsultarNotas/consultar_notas_page.dart';
 import 'package:gespa_app/Gespa/Screens/Home/home.dart';
 import 'package:gespa_app/Gespa/Screens/LancarNotas/lancar_notas.dart';
 
@@ -23,6 +24,7 @@ class Routes {
   static const LANCAR_NOTAS = "/lancar_notas";
   static const CADASTRAR_ANO_LETIVO = "/cadastrar_ano_letivo";
   static const CADASTRAR_TURMA = "/cadastrar_turma";
+  static const CONSULTAR_NOTAS = "/consultar_notas";
 
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
@@ -36,7 +38,8 @@ class Routes {
       AREA_PROFESSOR: (context) => const AreaProfessorPage(),
       LANCAR_NOTAS: (context) => const LancarNotasPage(),
       CADASTRAR_ANO_LETIVO: (context) => const CadastrarAnoLetivoPage(),
-      CADASTRAR_TURMA: (context) => CadastrarTurmaPage()
+      CADASTRAR_TURMA: (context) => CadastrarTurmaPage(),
+      CONSULTAR_NOTAS: (context) => const ConsultarNotasPage()
     };
   }
 }

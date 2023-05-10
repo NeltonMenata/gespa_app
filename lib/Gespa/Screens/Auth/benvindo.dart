@@ -1,6 +1,7 @@
 //import 'package:animated_text_kit/animated_text_kit.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gespa_app/Gespa/Screens/LancarNotas/testes_dart.dart';
 //import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../ui/botton_yeto.dart';
@@ -10,11 +11,17 @@ import '/ui/text_with_tap.dart';
 import 'package:get/get.dart';
 import 'auth_ui/login/login.dart';
 
-class BenvindoScreen extends StatelessWidget {
-  const BenvindoScreen({super.key});
+class BenvindoScreen extends StatefulWidget {
+  BenvindoScreen({super.key});
+  int numbers = 0;
+  @override
+  State<BenvindoScreen> createState() => _BenvindoScreenState();
+}
 
+class _BenvindoScreenState extends State<BenvindoScreen> {
   @override
   Widget build(BuildContext context) {
+    print("## BUILD PRINCIPAL ##");
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(

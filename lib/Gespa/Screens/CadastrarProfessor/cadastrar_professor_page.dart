@@ -78,7 +78,7 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
                                 controller: disciplina,
                                 hintText: "Escolhe a disciplina",
                                 list: const [
-                                  "Portugues",
+                                  "L. Portuguesa",
                                   "Matematica",
                                   "Historia",
                                   "Geografia",

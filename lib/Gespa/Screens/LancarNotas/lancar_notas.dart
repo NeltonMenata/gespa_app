@@ -1224,6 +1224,8 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
           actions: [
             TextButton(
                 onPressed: () async {
+                  this.setState(() {});
+
                   Get.back();
 
                   try {

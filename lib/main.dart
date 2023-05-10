@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       defaultTransition: Transition.native,
       builder: EasyLoading.init(),
-      home: const BenvindoScreen(),
+      home: BenvindoScreen(),
       routes: Routes.routes(context),
     );
   }
