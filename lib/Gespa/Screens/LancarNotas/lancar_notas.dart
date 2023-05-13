@@ -306,11 +306,11 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                     if (mes.text.isEmpty ||
                                         semana.text.isEmpty ||
                                         nota.text.isEmpty ||
-                                        double.parse(nota.text) > 20 ||
+                                        double.parse(nota.text) > 5 ||
                                         double.parse(nota.text) < 0 ||
                                         turma.text.isEmpty) {
                                       showResultCustom(context,
-                                          "Preencha todos os campos corretamente!");
+                                          "Preencha todos os campos corretamente! \nMAC não pode ser inferior a 0 nem superior a 5");
                                       return;
                                     }
 
@@ -1102,6 +1102,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
 
   Future<List<ParseObject>> _carregarAluno(String turmaObjectId) async {
     final queryAluno = QueryBuilder(ParseObject("_User"))
+      ..orderByAscending("numero")
       ..whereEqualTo(
           "turma", (ParseObject("Turma")..objectId = turmaObjectId).toPointer())
       ..whereEqualTo("level", 2);
@@ -1345,7 +1346,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     if (divisor < 1) {
       divisor = 1;
     }
-    return double.parse((soma / divisor).toStringAsFixed(2));
+    return double.parse((soma / divisor).toStringAsFixed(2)) * 4;
   }
 
   Future<double> _consultarNotas(
@@ -1402,6 +1403,8 @@ Future<void> qualquer() async {
     listParses.add(ParseObject("OlaMundo")..set("hello", "Hello World"));
   }
   final result = await Future.wait(listParses.map((e) => e.save()).toList());
-  result.forEach((e) => print(e.result.get("objectId")));
+  for (var e in result) {
+    print(e.result.get("objectId"));
+  }
   print("Funçao de Concorrência de Chamadas Assincronas!");
 }
