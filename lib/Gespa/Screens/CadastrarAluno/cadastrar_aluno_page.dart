@@ -225,7 +225,8 @@ class _CadastrarAlunoPageState extends State<CadastrarAlunoPage> {
   }
 
   Future<List<ParseObject>> _carregarAnoLetivo() async {
-    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
+    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"))
+      ..orderByAscending("ano");
     return await queryAnoLetivo.find();
   }
 }

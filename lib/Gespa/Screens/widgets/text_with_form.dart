@@ -23,7 +23,7 @@ class _TextWithFormState extends State<TextWithForm> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -229,7 +229,7 @@ class _TextWithDropParseObjectState extends State<TextWithDropParseObject> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(

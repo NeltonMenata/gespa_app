@@ -17,7 +17,6 @@ class _NotasState extends State<Notas> {
   // int? _group = 0;
   int value = 0;
   int? group = 0;
-  final Color _bgColor = Colors.white;
 
   trimestre1({
     required String text,

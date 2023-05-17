@@ -30,9 +30,28 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
                   children: [
                     ...List.generate(
                         snapshot.data!.length,
-                        (index) => ListTile(
-                              title: Text(
-                                  snapshot.data![index].get("ano").toString()),
+                        (index) => Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListTile(
+                                      title: Text(
+                                        snapshot.data![index]
+                                            .get("ano")
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const Divider()
+                              ],
                             ))
                   ],
                 );
@@ -82,7 +101,8 @@ class _CadastrarAnoLetivoPageState extends State<CadastrarAnoLetivoPage> {
   }
 
   Future<List<ParseObject>> _carregarAnoLetivo() async {
-    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
+    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"))
+      ..orderByAscending("ano");
     return await queryAnoLetivo.find();
   }
 

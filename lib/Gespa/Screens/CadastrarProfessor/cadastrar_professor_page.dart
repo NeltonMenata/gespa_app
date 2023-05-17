@@ -26,7 +26,7 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("GESPA"),
+        title: const Text("GESPA"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -44,7 +44,7 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
               child: Column(
                 children: [
                   const Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "CADASTRO DE PROFESSOR",
                       style: TextStyle(color: Colors.white, fontSize: 20),
@@ -208,7 +208,8 @@ class _CadastrarProfessorPageState extends State<CadastrarProfessorPage> {
   }
 
   Future<List<ParseObject>> _carregarAnoLetivo() async {
-    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"));
+    final queryAnoLetivo = QueryBuilder(ParseObject("AnoLetivo"))
+      ..orderByAscending("ano");
     return await queryAnoLetivo.find();
   }
 }

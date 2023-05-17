@@ -39,13 +39,7 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
-            onTap: () async {
-              //  await qualquer();
-              print(turma.text);
-              print("Finished");
-            },
-            child: const Text("GESPA")),
+        title: const Text("GESPA"),
       ),
       body: Column(
         children: [
@@ -123,7 +117,9 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
                                     getObject: "turma",
                                     action: () async {
                                       Get.snackbar("Carregando",
-                                          "Aguarde o carregamento dos alunos da turma selecionada!");
+                                          "Aguarde o carregamento dos alunos da turma selecionada!",
+                                          backgroundColor:
+                                              Colors.orange.shade200);
                                       listAluno.clear();
                                       listAluno.addAll(
                                           await _carregarAluno(turma.text));
@@ -1394,17 +1390,4 @@ class _LancarNotasPageState extends State<LancarNotasPage> {
     return double.tryParse(resultProvas?.get(nppOrNpt).toString() ?? "0.0") ??
         0.0;
   }
-}
-
-Future<void> qualquer() async {
-  final List<ParseObject> listParses = [];
-  for (var c = 0; c < 10; c++) {
-    print(c);
-    listParses.add(ParseObject("OlaMundo")..set("hello", "Hello World"));
-  }
-  final result = await Future.wait(listParses.map((e) => e.save()).toList());
-  for (var e in result) {
-    print(e.result.get("objectId"));
-  }
-  print("Funçao de Concorrência de Chamadas Assincronas!");
 }

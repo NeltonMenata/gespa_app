@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gespa_app/Gespa/Screens/Auth/auth_ui/login/login_controller.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
-
-import '../../../ui/container_with_corner.dart';
-import '../../../ui/text_with_tap.dart';
-import '../notas/notas.dart';
 
 class ConsultarNotasPage extends StatefulWidget {
   const ConsultarNotasPage({Key? key}) : super(key: key);
@@ -16,6 +11,16 @@ class ConsultarNotasPage extends StatefulWidget {
 }
 
 class _ConsultarNotasPageState extends State<ConsultarNotasPage> {
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 1), () {
+      Get.snackbar("Notas", "Aguarde o carregamento das Notas!",
+          backgroundColor: Colors.orange.shade200);
+    });
+
+    super.initState();
+  }
+
   int _selectFour = 0;
   @override
   Widget build(BuildContext context) {
@@ -324,36 +329,97 @@ class _ConsultarNotasPageState extends State<ConsultarNotasPage> {
                             future: _consultarResultadoFinal(
                                 alunoObjectId: userLogado.objectId!,
                                 disciplinas: listaDisciplina),
-                            initialData: 0,
+                            //initialData: 0,
                             builder: (context, snapshot) => Container(
-                                width: size.width,
-                                alignment: Alignment.center,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Column(
-                                  children: [
-                                    const Divider(
-                                      thickness: 5,
-                                      color: Colors.white,
-                                    ),
-                                    snapshot.data! > 10
-                                        ? Text(
-                                            "APROVADO ${snapshot.data}",
-                                            style: const TextStyle(
-                                                fontSize: 25,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : Text(
-                                            "REPROVADO ${snapshot.data}",
-                                            style: const TextStyle(
-                                                fontSize: 25,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                  ],
-                                )),
-                          )
+                              width: size.width,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                children: [
+                                  const Divider(
+                                    thickness: 5,
+                                    color: Colors.white,
+                                  ),
+                                  snapshot.hasError
+                                      ? const Text(
+                                          "Erro ao Carregar nota!",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : snapshot.hasData
+                                          ? snapshot.data! < 8
+                                              ? Text(
+                                                  "NÃO APTO: ${snapshot.data}",
+                                                  style: const TextStyle(
+                                                      fontSize: 25,
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              : snapshot.data! > 8 &&
+                                                      snapshot.data! < 10
+                                                  ? Text(
+                                                      "RECUPERAÇÃO: ${snapshot.data}",
+                                                      style: const TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : Text(
+                                                      "APTO: ${snapshot.data}",
+                                                      style: const TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                          : const Text(
+                                              "CARREGANDO...",
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          /*
+                          
+                          snapshot.hasData
+                                          ? snapshot.data!["negativas"] > 3
+                                              ? Text(
+                                                  "NÃO APTO: ${snapshot.data["media"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 25,
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              : snapshot.data!["negativas"] > 1 && snapshot.data!["negativas"] <= 3
+                                                      snapshot.data! < 10
+                                                  ? Text(
+                                                      "RECUPERAÇÃO: ${snapshot.data["media"]}",
+                                                      style: const TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : Text(
+                                                      "APTO: ${snapshot.data["media"]}",
+                                                      style: const TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                          
+                          */
                         ],
                       ),
               ),
@@ -496,4 +562,33 @@ Future<double> _consultarResultadoFinal(
     }
   }
   return double.parse((sum / divisor).toStringAsFixed(2));
+}
+
+Future<Map<String, dynamic>> _consultarResultadoFinalDisc(
+    {required String alunoObjectId, required List<String> disciplinas}) async {
+  final cRF = await Future.wait([
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[0]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[1]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[2]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[3]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[4]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[5]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[6]),
+    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[7]),
+  ]);
+  var sum = 0.0;
+  int sumNegativas = 0;
+  int divisor = cRF.length;
+  for (var nota in cRF) {
+    sum += nota;
+    if (nota < 1) {
+      divisor--;
+    } else if (nota > 1 && nota < 10) {
+      sumNegativas++;
+    }
+  }
+  return {
+    "media": double.parse((sum / divisor).toStringAsFixed(2)),
+    "negativas": sumNegativas
+  };
 }

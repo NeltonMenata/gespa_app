@@ -36,7 +36,7 @@ class _AreaProfessorPageState extends State<AreaProfessorPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     "AREA DO PROFESSOR",
                     style: TextStyle(color: Colors.white, fontSize: 20),

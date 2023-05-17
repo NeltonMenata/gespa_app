@@ -132,11 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context, Routes.CADASTRAR_PROFESSOR);
                             },
                           ),
-                          textAdmin(
-                            text: "Disciplina",
-                            icon: CupertinoIcons.book,
-                            onTap: () {},
-                          ),
+                          // textAdmin(
+                          //   text: "Disciplina",
+                          //   icon: CupertinoIcons.book,
+                          //   onTap: () {},
+                          // ),
                         ],
                       ),
                       Row(
@@ -146,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: "Turma",
                             icon: CupertinoIcons.home,
                             onTap: () {
-                              print("turma");
                               Navigator.of(context)
                                   .pushNamed(Routes.CADASTRAR_TURMA);
                             },
@@ -157,7 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
                               Navigator.pushNamed(
                                   context, Routes.CADASTRAR_ANO_LETIVO);
-                              print("tuRno");
                             },
                           ),
                         ],

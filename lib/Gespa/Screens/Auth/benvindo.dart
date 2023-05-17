@@ -1,9 +1,4 @@
-//import 'package:animated_text_kit/animated_text_kit.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gespa_app/Gespa/Screens/LancarNotas/testes_dart.dart';
-//import 'package:flutter_animate/flutter_animate.dart';
-
 import '../../../../ui/botton_yeto.dart';
 import '../../../../utils/colors.dart';
 import '/ui/container_with_corner.dart';

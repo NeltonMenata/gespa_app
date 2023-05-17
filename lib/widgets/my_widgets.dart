@@ -63,8 +63,7 @@ Widget myTextField(
           icon!,
           cacheHeight: 20,
         ),
-        border: OutlineInputBorder(
-          //borderRadius: BorderRadius.circular(14.0),
+        border: const OutlineInputBorder(
           borderSide: BorderSide.none,
         ),
       ),

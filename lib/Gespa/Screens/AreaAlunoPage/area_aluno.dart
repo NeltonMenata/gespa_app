@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gespa_app/Gespa/Screens/Routes/routes.dart';
-import 'package:get/get.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../../ui/container_with_corner.dart';
 import '../../../ui/text_with_tap.dart';
 import '../Auth/auth_ui/login/login_controller.dart';
-import '../notas/notas.dart';
 
 class AreaAlunoPage extends StatefulWidget {
   const AreaAlunoPage({Key? key}) : super(key: key);
