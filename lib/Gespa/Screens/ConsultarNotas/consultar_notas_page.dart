@@ -444,126 +444,144 @@ class _ConsultarNotasPageState extends State<ConsultarNotasPage> {
   final colunas = const ["Disciplina", "MAC", "NPP", "NPT", "MD"];
 
   final colunas2 = const ["Disciplina", "MD1", "MD2", "MD3", "MF"];
-}
 
-Future<double> _calcularMDFinal(
-    {required String alunoObjectId, required String disciplina}) async {
-  double sum = 0.0;
-  final mds = await Future.wait<double>([
-    _calcularMD(
-        alunoObjectId: alunoObjectId, disciplina: disciplina, trimestre: "1º"),
-    _calcularMD(
-        alunoObjectId: alunoObjectId, disciplina: disciplina, trimestre: "2º"),
-    _calcularMD(
-        alunoObjectId: alunoObjectId, disciplina: disciplina, trimestre: "3º"),
-  ]);
-  print(mds);
-  for (double nota in mds) {
-    sum += nota;
-  }
-
-  return double.parse((sum / mds.length).toStringAsFixed(2));
-}
-
-Future<double> _calcularMD({
-  required String alunoObjectId,
-  required String disciplina,
-  required String trimestre,
-}) async {
-  var sum = 0.0;
-  final mac = await Future.wait([
-    _consultarMacTrimestre(
-      alunoObjectId: alunoObjectId,
-      disciplina: disciplina,
-      trimestre: trimestre,
-    ),
-    _consultarNotasProvas(
-      alunoObjectId: alunoObjectId,
-      nppOrNpt: "npp",
-      disciplina: disciplina,
-      trimestre: trimestre,
-    ),
-    _consultarNotasProvas(
-      alunoObjectId: alunoObjectId,
-      nppOrNpt: "npt",
-      disciplina: disciplina,
-      trimestre: trimestre,
-    )
-  ]);
-  for (var nota in mac) {
-    sum += nota;
-  }
-  return double.parse((sum / 3).toStringAsFixed(2));
-}
-
-Future<double> _consultarMacTrimestre({
-  required String alunoObjectId,
-  required String disciplina,
-  required String trimestre,
-}) async {
-  final queryMac = QueryBuilder(ParseObject("MAC"))
-    ..whereEqualTo(
-        "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
-    ..whereEqualTo("disciplina", disciplina)
-    ..whereEqualTo("trimestre", trimestre);
-
-  final queryNota = await queryMac.find();
-
-  int divisor = queryNota.length;
-  double soma = 0;
-  for (var element in queryNota) {
-    double valorAtual = double.tryParse(element.get("nota").toString()) ?? 0.0;
-    if (valorAtual < 1) {
-      divisor--;
+  Future<double> _calcularMDFinal(
+      {required String alunoObjectId, required String disciplina}) async {
+    double sum = 0.0;
+    final mds = await Future.wait<double>([
+      _calcularMD(
+          alunoObjectId: alunoObjectId,
+          disciplina: disciplina,
+          trimestre: "1º"),
+      _calcularMD(
+          alunoObjectId: alunoObjectId,
+          disciplina: disciplina,
+          trimestre: "2º"),
+      _calcularMD(
+          alunoObjectId: alunoObjectId,
+          disciplina: disciplina,
+          trimestre: "3º"),
+    ]);
+    print(mds);
+    for (double nota in mds) {
+      sum += nota;
     }
-    soma += valorAtual;
+
+    return double.parse((sum / mds.length).toStringAsFixed(2));
   }
-  if (divisor < 1) {
-    divisor = 1;
-  }
-  return double.parse((soma / divisor).toStringAsFixed(2)) * 4;
-}
 
-Future<double> _consultarNotasProvas({
-  required String alunoObjectId,
-  required String nppOrNpt,
-  required String disciplina,
-  required String trimestre,
-}) async {
-  final queryNppNpt = QueryBuilder(ParseObject("Provas"))
-    ..whereEqualTo(
-        "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
-    ..whereEqualTo("disciplina", disciplina)
-    ..whereEqualTo("trimestre", trimestre);
-  final resultProvas = await queryNppNpt.first();
-
-  return double.tryParse(resultProvas?.get(nppOrNpt).toString() ?? "0.0") ??
-      0.0;
-}
-
-Future<double> _consultarResultadoFinal(
-    {required String alunoObjectId, required List<String> disciplinas}) async {
-  final cRF = await Future.wait([
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[0]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[1]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[2]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[3]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[4]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[5]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[6]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[7]),
-  ]);
-  var sum = 0.0;
-  int divisor = cRF.length;
-  for (var nota in cRF) {
-    sum += nota;
-    if (nota < 1) {
-      divisor--;
+  Future<double> _calcularMD({
+    required String alunoObjectId,
+    required String disciplina,
+    required String trimestre,
+  }) async {
+    var sum = 0.0;
+    final mac = await Future.wait([
+      _consultarMacTrimestre(
+        alunoObjectId: alunoObjectId,
+        disciplina: disciplina,
+        trimestre: trimestre,
+      ),
+      _consultarNotasProvas(
+        alunoObjectId: alunoObjectId,
+        nppOrNpt: "npp",
+        disciplina: disciplina,
+        trimestre: trimestre,
+      ),
+      _consultarNotasProvas(
+        alunoObjectId: alunoObjectId,
+        nppOrNpt: "npt",
+        disciplina: disciplina,
+        trimestre: trimestre,
+      )
+    ]);
+    for (var nota in mac) {
+      sum += nota;
     }
+    return double.parse((sum / 3).toStringAsFixed(2));
   }
-  return double.parse((sum / divisor).toStringAsFixed(2));
+
+  Future<double> _consultarMacTrimestre({
+    required String alunoObjectId,
+    required String disciplina,
+    required String trimestre,
+  }) async {
+    final queryMac = QueryBuilder(ParseObject("MAC"))
+      ..whereEqualTo(
+          "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
+      ..whereEqualTo("disciplina", disciplina)
+      ..whereEqualTo("trimestre", trimestre);
+
+    final queryNota = await queryMac.find();
+
+    int divisor = queryNota.length;
+    double soma = 0;
+    for (var element in queryNota) {
+      double valorAtual =
+          double.tryParse(element.get("nota").toString()) ?? 0.0;
+      if (valorAtual < 1) {
+        divisor--;
+      }
+      soma += valorAtual;
+    }
+    if (divisor < 1) {
+      divisor = 1;
+    }
+    return double.parse((soma / divisor).toStringAsFixed(2)) * 4;
+  }
+
+  Future<double> _consultarNotasProvas({
+    required String alunoObjectId,
+    required String nppOrNpt,
+    required String disciplina,
+    required String trimestre,
+  }) async {
+    final queryNppNpt = QueryBuilder(ParseObject("Provas"))
+      ..whereEqualTo(
+          "aluno", (ParseObject("_User")..objectId = alunoObjectId).toPointer())
+      ..whereEqualTo("disciplina", disciplina)
+      ..whereEqualTo("trimestre", trimestre);
+    final resultProvas = await queryNppNpt.first();
+
+    return double.tryParse(resultProvas?.get(nppOrNpt).toString() ?? "0.0") ??
+        0.0;
+  }
+
+  Future<double> _consultarResultadoFinal(
+      {required String alunoObjectId,
+      required List<String> disciplinas}) async {
+    final cRF = await Future.wait([
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[0]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[1]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[2]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[3]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[4]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[5]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[6]),
+      _calcularMDFinal(
+          alunoObjectId: alunoObjectId, disciplina: disciplinas[7]),
+    ]);
+    var sum = 0.0;
+    int divisor = cRF.length;
+    for (var nota in cRF) {
+      sum += nota;
+      if (nota < 1) {
+        divisor--;
+      }
+    }
+    return double.parse((sum / divisor).toStringAsFixed(2));
+  }
 }
 
+
+/*
 Future<Map<String, dynamic>> _consultarResultadoFinalDisc(
     {required String alunoObjectId, required List<String> disciplinas}) async {
   final cRF = await Future.wait([
@@ -592,3 +610,4 @@ Future<Map<String, dynamic>> _consultarResultadoFinalDisc(
     "negativas": sumNegativas
   };
 }
+*/
