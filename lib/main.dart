@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Gespa Demo',
+      title: 'Gespa',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           elevation: 0,

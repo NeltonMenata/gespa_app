@@ -7,6 +7,7 @@ class TextFieldYetu extends StatelessWidget {
   final String hintText;
   bool isPassword;
   bool isEmail;
+  Color? color;
   bool iscontact;
   Widget icon;
   TextInputAction? textInputAction;
@@ -20,6 +21,7 @@ class TextFieldYetu extends StatelessWidget {
     required this.isEmail,
     required this.icon,
     required this.iscontact,
+    this.color,
     required this.controller,
     required this.textInputAction,
     required this.validator,
@@ -51,7 +53,7 @@ class TextFieldYetu extends StatelessWidget {
         validator: validator!,
         controller: controller,
         textInputAction: textInputAction,
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: color ?? Colors.black),
         obscureText: isPassword,
         keyboardType: isEmail
             ? TextInputType.emailAddress

@@ -38,8 +38,9 @@ class _LoginState extends State<Login> {
         height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
-            opacity: .9,
+            opacity: .7,
             fit: BoxFit.cover,
             image: AssetImage("assets/images/garotas.jpg"),
           ),
@@ -66,7 +67,8 @@ class _LoginState extends State<Login> {
                   fontSize: size.width * 0.04,
                   marginLeft: 14,
                   marginRight: 14,
-                  color: const Color.fromARGB(255, 4, 2, 2),
+                  color:
+                      Colors.deepOrange, //const Color.fromARGB(255, 4, 2, 2),
                   fontWeight: FontWeight.bold,
                   marginTop: size.width * 0.0,
                   alignment: Alignment.topCenter,
@@ -75,7 +77,7 @@ class _LoginState extends State<Login> {
                 TextWithTap(
                   "Entrar no Sistema",
                   fontSize: size.width * 0.05,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   marginTop: size.width * 0.1,
                   alignment: Alignment.topCenter,
@@ -89,6 +91,7 @@ class _LoginState extends State<Login> {
                     controller: email,
                     textInputAction: TextInputAction.done,
                     hintText: 'Identificador',
+                    color: Colors.white,
                     isEmail: true,
                     isPassword: false,
                     iscontact: false,
@@ -120,6 +123,7 @@ class _LoginState extends State<Login> {
                     hintText: 'Senha',
                     isEmail: false,
                     isPassword: isShowPassword,
+                    color: Colors.white,
                     iscontact: false,
                     icon: IconButton(
                         icon: Icon(
@@ -223,7 +227,11 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 24.0,
                 ),
-                const Center(child: Text("Não tem uma conta?")),
+                const Center(
+                    child: Text(
+                  "Não tem uma conta?",
+                  style: TextStyle(color: Colors.white),
+                )),
                 const SizedBox(
                   height: 12.0,
                 ),
@@ -232,7 +240,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {},
                     child: Text(
                       "Gerencie pautas escolares com facilidade!",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      style: TextStyle(color: Colors.deepOrange.shade600),
                     ),
                   ),
                 ),

@@ -7,17 +7,17 @@ abstract class Back4app {
   static Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    final keyApplicationId = "42Hc3VIP3jMcCSiwGD7cLFtaRIQqBN9saBV1SPsP";
-    final keyClientKey = "kzwc07AQ4Y6XDqADcQHw6FKjzlzeROiB32PlpBnY";
+    final keyApplicationId = "PUf4NIEOiDKFzbnZkXjSykTn3ZsBtZr8yN5gmPrk";
+    final keyClientKey = "w7RYyZi1wXSpUkzSUJ2BFkcnRYtgiYWoLJ8yuNEO";
     final keyParseServerUrl = "https://parseapi.back4app.com";
-    final liveQueryUrl = "https://apupueventos.b4a.io";
+    //final liveQueryUrl = "https://apupueventos.b4a.io";
 
     await Parse().initialize(
       keyApplicationId,
       keyParseServerUrl,
       clientKey: keyClientKey,
       autoSendSessionId: true,
-      liveQueryUrl: liveQueryUrl,
+      //liveQueryUrl: liveQueryUrl,
     );
   }
 }

@@ -145,7 +145,7 @@ class _TextWithDropState extends State<TextWithDrop> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(

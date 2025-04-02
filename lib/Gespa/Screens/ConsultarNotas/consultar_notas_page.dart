@@ -579,35 +579,3 @@ class _ConsultarNotasPageState extends State<ConsultarNotasPage> {
     return double.parse((sum / divisor).toStringAsFixed(2));
   }
 }
-
-
-/*
-Future<Map<String, dynamic>> _consultarResultadoFinalDisc(
-    {required String alunoObjectId, required List<String> disciplinas}) async {
-  final cRF = await Future.wait([
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[0]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[1]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[2]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[3]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[4]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[5]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[6]),
-    _calcularMDFinal(alunoObjectId: alunoObjectId, disciplina: disciplinas[7]),
-  ]);
-  var sum = 0.0;
-  int sumNegativas = 0;
-  int divisor = cRF.length;
-  for (var nota in cRF) {
-    sum += nota;
-    if (nota < 1) {
-      divisor--;
-    } else if (nota > 1 && nota < 10) {
-      sumNegativas++;
-    }
-  }
-  return {
-    "media": double.parse((sum / divisor).toStringAsFixed(2)),
-    "negativas": sumNegativas
-  };
-}
-*/

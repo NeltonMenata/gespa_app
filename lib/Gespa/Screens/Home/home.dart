@@ -82,8 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
           height: double.infinity,
           width: double.infinity,
           decoration: const BoxDecoration(
+            color: Colors.black,
             image: DecorationImage(
-              opacity: 1.6,
+              opacity: .7,
               fit: BoxFit.cover,
               image: AssetImage("assets/images/garotas.jpg"),
             ),
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextWithTap(
                   "ÁREA DE ADMINISTRADOR",
                   fontSize: size.width * 0.07,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   marginTop: size.width * 0.1,
                 ), //.animate().fade(duration: 500.ms).scale(delay: 500.ms),
